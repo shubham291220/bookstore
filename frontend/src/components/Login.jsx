@@ -2,6 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 import { useForm } from "react-hook-form"
+import axios from 'axios';
+
+import toast from 'react-hot-toast';
+///axios import for data base
+
 
 function Login() {
 
@@ -12,7 +17,54 @@ function Login() {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => console.log(data)
+     const onSubmit =async (data) => //console.log(data)
+  
+  
+  {
+    const userInfo={
+     
+      email:data.email,
+      password:data.password,
+    }
+//  call API axio
+await axios.post("http://localhost:4001/user/login",userInfo)
+ .then((res)=>{
+
+console.log(res.data)
+if(res.data){
+// alert("Login Sucessfully")
+
+
+document.getElementById("my_modal_3").close();
+toast.success('Login Sucessfully !'); 
+setTimeout(()=>{
+  window.location.reload();
+  localStorage.setItem("Users",JSON.stringify(res.data.user));
+},1000);
+
+
+
+}
+//store data in browser local storege
+
+
+ })
+ .catch((error)=>{
+ if(error.response){
+  console.log(error)
+  // alert("Error: "+error.response.data.message);
+
+  toast.error('Error!'+error.response.data.message);
+ }
+
+ });
+
+
+  };
+
+
+
+
 
   return (
     <div>

@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
 import Login from './Login';
+import Logout from './Logout';
+
+//for bakend import from context
+import { useAuth } from '../context/AuthProvider';
 
 function Navbar() {
+
+  //backend code
+const [authUser,setAuthUser]=useAuth();
+
+
+  //
+
+
 
   //theme change 
   const [theme,setTheme]=useState(localStorage.getItem("theme")?localStorage.getItem("theme"):"ligth")
@@ -153,8 +165,15 @@ const navitem=(
 </label>
 {/* dark mode end */}
 
-{/* llogin start */}
-  <div className="">
+
+
+
+{
+  authUser?(
+  <Logout/>
+  ):(
+
+<div className="">
     <a className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 duration-300 cursor-pointer" 
     
     onClick={()=>
@@ -165,8 +184,9 @@ const navitem=(
     >
       Login</a>
       <Login />
-  </div>
-{/* log in end */}
+  </div> 
+)}
+
 
 </div>
 </div>

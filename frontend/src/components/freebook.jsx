@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 
@@ -9,16 +9,40 @@ import Slider from "react-slick";
 
 
 
-import list from "../../public/list.json"
+// import list from "../../public/list.json"
+import axios from 'axios';
 import Laura from './Cards';
 
 
 function freebook() {
 
+  //backend code 
+  const [book,setBook]=useState([])
+useEffect(()=>{
+  const getBook=async()=>{
+    try{
+      const res=await axios.get("http://localhost:4001/book");
+      
+      const data=res.data.filter((data)=>data.category==="Free")
+      
+      console.log(data);
+      setBook(data);
+
+    }
+    catch(error){
+      console.log("Error page 401",error)
+    }
+  }
+  getBook();
+
+},[])
+  
+  //
 
 
 
-    const filterData=list.filter((data)=>data.category==="Free");
+//after mapin backend to frontend
+    // const filterData=list.filter((data)=>data.category==="Free");
 
 
 
@@ -82,7 +106,7 @@ function freebook() {
 
 
 
-{filterData.map((item)=>(
+{book.map((item)=>(
     <Laura item={item} key={item.id} />
 ))}
 
